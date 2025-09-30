@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Tebak Isi Komputer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      background: linear-gradient(to bottom, #e3f2fd, #90caf9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #game {
+      width: 90%;
+      max-width: 400px;
+      padding: 25px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+      position: relative;
+    }
+
+    #question {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    #answer {
+      padding: 10px;
+      width: 80%;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #42a5f5;
+      color: white;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #1e88e5;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    /* Tombol musik pojok kanan atas */
+    #music-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      padding: 8px 15px;
+      font-size: 14px;
+      border-radius: 20px;
+      background: #ff7043;
+      color: white;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    #music-btn:hover {
+      background: #f4511e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Musik -->
+  <audio id="bg-music" autoplay loop>
+    <source src="musik.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
+  <button id="music-btn" onclick="toggleMusic()">⏸️ Pause</button>
+
+  <!-- Game -->
+  <div id="game">
+    <div id="question"></div>
+    <input type="text" id="answer" placeholder="Tulis jawabanmu di sini">
+    <br>
+    <button onclick="checkAnswer()">Jawab</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    // Data pertanyaan
+    const questions = [
+      {q: "Apa fungsi CPU?", a: "mengolah data"},
+      {q: "Apa kepanjangan dari RAM?", a: "random access memory"},
+      {q: "Bagian komputer yang menyimpan data permanen?", a: "harddisk"},
+      {q: "Bagian komputer untuk menampilkan visual?", a: "monitor"},
+      {q: "Komponen untuk memasukkan teks ke komputer?", a: "keyboard"},
+      {q: "Komponen untuk navigasi pointer?", a: "mouse"},
+      {q: "Bagian komputer yang mengeluarkan suara?", a: "speaker"},
+      {q: "Apa fungsi GPU?", a: "grafis"},
+      {q: "Bagian komputer untuk mencetak dokumen?", a: "printer"},
+      {q: "Komponen untuk menyimpan data sementara?", a: "ram"},
+      {q: "Bagian komputer yang menyimpan sistem operasi?", a: "harddisk"},
+      {q: "Komponen untuk koneksi jaringan?", a: "kartu jaringan"},
+      {q: "Bagian komputer yang menyuplai daya listrik?", a: "power supply"},
+      {q: "Komponen yang menyimpan data kecil dan cepat?", a: "cache"},
+      {q: "Komponen untuk menyimpan BIOS?", a: "rom"},
+      {q: "Bagian komputer yang mengatur semua perangkat keras?", a: "motherboard"},
+      {q: "Komponen yang menjaga suhu CPU?", a: "kipas"},
+      {q: "Penyimpanan modern lebih cepat dari HDD?", a: "ssd"},
+      {q: "Perangkat untuk memindai gambar?", a: "scanner"},
+      {q: "Perangkat kecil untuk menyimpan data portabel?", a: "flashdisk"}
+    ];
+
+    let currentQuestion = 0;
+
+    const questionEl = document.getElementById("question");
+    const answerEl = document.getElementById("answer");
+    const resultEl = document.getElementById("result");
+
+    function loadQuestion() {
+      if (currentQuestion < questions.length) {
+        questionEl.textContent = questions[currentQuestion].q;
+        answerEl.value = "";
+        resultEl.textContent = "";
+      } else {
+        questionEl.textContent = "🎉 Selamat! Kamu sudah menjawab semua pertanyaan.";
+        answerEl.style.display = "none";
+      }
+    }
+
+    function checkAnswer() {
+      const userAnswer = answerEl.value.trim().toLowerCase();
+      const correctAnswer = questions[currentQuestion].a.toLowerCase();
+      if (userAnswer === correctAnswer) {
+        resultEl.textContent = "✅ Benar!";
+        resultEl.style.color = "green";
+        currentQuestion++;
+        setTimeout(loadQuestion, 1000);
+      } else {
+        resultEl.textContent = "❌ Salah, coba lagi!";
+        resultEl.style.color = "red";
+      }
+    }
+
+    loadQuestion();
+
+    // Kontrol musik
+    const bgMusic = document.getElementById("bg-music");
+    const musicBtn = document.getElementById("music-btn");
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.textContent = "⏸️ Pause";
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = "▶️ Play";
+      }
+    }
+  </script>
+</body>
+</html>
